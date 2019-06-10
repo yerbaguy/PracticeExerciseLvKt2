@@ -1,6 +1,5 @@
 package com.ebartmedia
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -25,29 +24,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.content_add_word.*
+import kotlinx.android.synthetic.main.content_add_word.button
+import kotlinx.android.synthetic.main.content_add_word.engword
+import kotlinx.android.synthetic.main.content_add_word.plword
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class AddWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
     private var compositeDisposable: CompositeDisposable?=null
     private var wordRepository: WordRepository?=null
     private var wordDAO: WordDAO?=null
 
-   // var count: List<Word>?=null
-
-    var count: Int?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_add_word)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
 
         compositeDisposable = CompositeDisposable()
 
-     //   var count:Int?=null
+
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -72,13 +72,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         button.setOnClickListener({
 
 
-          //  var eng:String?=null
+            //  var eng:String?=null
 
             var eng:String
             var pl:String
 
 
-         //   var pl:String?=null
+            //   var pl:String?=null
 
 //            eng = engword.toString()
 //            pl = plword.toString()
@@ -105,17 +105,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 word.engword = eng
                 word.plword = pl
 
-              //  wordRepository!!.getCount()
-         //       Log.d("getCount","getCount" + count)
+                //  wordRepository!!.getCount()
+                //       Log.d("getCount","getCount" + count)
 
 
-          //    count = wordRepository!!.getCount()
+                //    count = wordRepository!!.getCount()
 
-              //  count = wordDAO.getCount()
+                //  count = wordDAO.getCount()
 
-                count = wordRepository!!.getCount()
+          //      count = wordRepository!!.getCount()
 
-                Log.d("count", "ount" + count)
+          //      Log.d("count", "ount" + count)
 
                 wordRepository!!.insertWord(word)
                 e.onComplete()
@@ -138,13 +138,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             compositeDisposable!!.addAll(disposable)
 
 
-
-
-
-
-
-
-
         })
 
     }
@@ -160,7 +153,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.add_word, menu)
         return true
     }
 
@@ -177,14 +170,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-
-            R.id.addword -> {
-
-                val intent = Intent(this, AddWord::class.java)
-
-                startActivity(intent)
-
-            }
             R.id.nav_home -> {
                 // Handle the camera action
             }
