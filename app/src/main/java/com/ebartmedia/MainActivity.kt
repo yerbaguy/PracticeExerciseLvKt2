@@ -185,6 +185,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
 
             }
+
+            R.id.pulltheword -> {
+
+                val intent = Intent(this, PullTheWord::class.java)
+
+                startActivity(intent)
+
+            }
+
             R.id.nav_home -> {
                 // Handle the camera action
             }
