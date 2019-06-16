@@ -12,4 +12,7 @@ interface IWordDataSource {
 
     @Query("SELECT plword FROM word WHERE id LIKE :count")
     fun getPLWord(count:Int): String
+
+
+    fun makeRand(to:Int): Int
 }

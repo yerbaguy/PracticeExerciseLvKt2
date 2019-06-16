@@ -37,6 +37,8 @@ class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelected
     var count: Int?=null
 
     var count1: Int = 0
+
+    var randomword: Int = 0
     var pl:String = ""
 
 
@@ -74,7 +76,7 @@ class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelected
            // count = wordRepository!!.getCount();
 
 
-            textPullTheWord.setText("lkjsdflkjsdflkjsdflj")
+         //   textPullTheWord.setText("lkjsdflkjsdflkjsdflj")
            // Log.d("count", "count" + count);
 
 
@@ -100,6 +102,16 @@ class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelected
                 Log.d("count", "ount" + count)
 
                 count1 = count as Int
+
+                randomword = wordRepository!!.makeRand(count1)
+
+              //  pl = wordRepository!!.getPLWord(count1)
+                pl = wordRepository!!.getPLWord(randomword)
+
+                Log.d("randomword", "randomword" + pl)
+
+               // textPullTheWord.setText(randomword.toString())
+                textPullTheWord.setText(pl)
 
               pl = wordRepository!!.getPLWord(count1)
 

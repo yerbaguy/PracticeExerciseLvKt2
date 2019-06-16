@@ -21,5 +21,7 @@ interface WordDAO {
     @Query("SELECT plword FROM Word WHERE id LIKE :count ")
     fun getPlWord(count:Int): String
 
+  //  fun makeRand(to: Int): Int
+
    // @Query("SELECT * FROM hamster WHERE name LIKE :search")
 }
