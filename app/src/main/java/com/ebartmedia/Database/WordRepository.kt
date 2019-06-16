@@ -3,6 +3,11 @@ package com.ebartmedia.Database
 import com.ebartmedia.Model.Word
 
 class WordRepository(private val mLocationDataSource: IWordDataSource):IWordDataSource {
+    override fun getPLWord(count: Int): String {
+
+        return mLocationDataSource.getPLWord(count)
+    }
+
     override fun getCount(): Int {
 
         return mLocationDataSource.getCount()

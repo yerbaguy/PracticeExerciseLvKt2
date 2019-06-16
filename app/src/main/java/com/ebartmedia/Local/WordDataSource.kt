@@ -5,6 +5,11 @@ import com.ebartmedia.Model.Word
 
 
 class WordDataSource(private val wordDAO: WordDAO): IWordDataSource {
+    override fun getPLWord(count: Int): String {
+
+        return wordDAO.getPlWord(count)
+    }
+
     override fun getCount(): Int {
 
         return wordDAO.getCount()

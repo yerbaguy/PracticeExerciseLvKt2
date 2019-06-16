@@ -9,4 +9,7 @@ interface IWordDataSource {
 
     @Query("SELECT COUNT(id) FROM word")
     fun getCount(): Int
+
+    @Query("SELECT plword FROM word WHERE id LIKE :count")
+    fun getPLWord(count:Int): String
 }

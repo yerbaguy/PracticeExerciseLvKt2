@@ -11,11 +11,33 @@ import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
+import android.widget.Toast
+import com.ebartmedia.Database.WordRepository
+import com.ebartmedia.Local.WordDAO
+import com.ebartmedia.Local.WordDataSource
+import com.ebartmedia.Local.WordDatabase
+import com.ebartmedia.Model.Word
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Action
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.content_add_word.*
 import kotlinx.android.synthetic.main.content_pull_the_word.*
 
 class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private var compositeDisposable: CompositeDisposable?=null
+    private var wordRepository: WordRepository?=null
+    private var wordDAO: WordDAO?=null
+
+    var count: Int?=null
+
+    var count1: Int = 0
+    var pl:String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +45,8 @@ class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelected
         setContentView(R.layout.activity_pull_the_word)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        compositeDisposable = CompositeDisposable()
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -39,12 +63,87 @@ class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
         navView.setNavigationItemSelectedListener(this)
 
+        val wordDatabase = WordDatabase.getInstance(this)
+        wordRepository = WordRepository.getInstance(WordDataSource.getInstance(wordDatabase.wordDAO()))
+
 
         buttonPullTheWord.setOnClickListener({
 
 
 
+           // count = wordRepository!!.getCount();
+
+
             textPullTheWord.setText("lkjsdflkjsdflkjsdflj")
+           // Log.d("count", "count" + count);
+
+
+            val disposable = Observable.create(ObservableOnSubscribe<Any> { e->
+
+                val word = Word()
+                //  word.engword = "lkajsdf"
+                //  word.plword = "lkjsdf"
+
+         //       word.engword = eng
+         //       word.plword = pl
+
+                //  wordRepository!!.getCount()
+                //       Log.d("getCount","getCount" + count)
+
+
+                //    count = wordRepository!!.getCount()
+
+                //  count = wordDAO.getCount()
+
+                count = wordRepository!!.getCount()
+
+                Log.d("count", "ount" + count)
+
+                count1 = count as Int
+
+              pl = wordRepository!!.getPLWord(count1)
+
+                Log.d("pl", "pl" + pl)
+
+
+
+
+              //  wordRepository!!.insertWord(word)
+                e.onComplete()
+
+            })
+
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(io.reactivex.functions.Consumer {
+
+                },
+
+                    io.reactivex.functions.Consumer {
+
+                            throwable-> Toast.makeText(this, ""+throwable.message, Toast.LENGTH_SHORT).show()
+                    },
+
+                    Action {  } )
+
+            compositeDisposable!!.addAll(disposable)
+
+
+
+
+
+
+
+
+
+       // })
+
+
+
+
+
+
+
 
 
 
