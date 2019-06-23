@@ -15,6 +15,12 @@
                 android:icon="@drawable/ic_menu_camera"
                 android:title="Pull The Word"/>
 
+        <item
+                android:id="@+id/showword"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Show Word"/>
+
+
 
         <item
                 android:id="@+id/nav_home"

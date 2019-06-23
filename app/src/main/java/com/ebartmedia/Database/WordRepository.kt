@@ -1,10 +1,33 @@
 package com.ebartmedia.Database
 
+import android.arch.lifecycle.LiveData
 import com.ebartmedia.Model.Word
+import io.reactivex.Flowable
 import java.util.*
 
 class WordRepository(private val mLocationDataSource: IWordDataSource):IWordDataSource {
-    override fun makeRand(to: Int): Int {
+    override val allWords: Flowable<List<Word>>
+        get() = mLocationDataSource.allWords
+
+
+
+//    override fun selectAllWords(): LiveData<List<Word>> {
+//
+//        return mLocationDataSource.selectAllWords()
+//    }
+
+//    override fun makeRand(to: Int): Int {
+//
+//        val from = 1
+//
+//        val random = Random()
+//
+//        return random.nextInt(to - from) + from
+//
+//    }
+
+
+       fun makeRand(to: Int): Int {
 
         val from = 1
 
@@ -13,6 +36,9 @@ class WordRepository(private val mLocationDataSource: IWordDataSource):IWordData
         return random.nextInt(to - from) + from
 
     }
+
+
+
 
     override fun getPLWord(count: Int): String {
 

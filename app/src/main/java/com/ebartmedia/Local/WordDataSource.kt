@@ -1,35 +1,62 @@
 package com.ebartmedia.Local
 
+import android.arch.lifecycle.LiveData
 import com.ebartmedia.Database.IWordDataSource
 import com.ebartmedia.Model.Word
+import io.reactivex.Flowable
+import java.lang.reflect.Array.get
 
 
 class WordDataSource(private val wordDAO: WordDAO): IWordDataSource {
-    override fun makeRand(to: Int): Int {
+    override val allWords: Flowable<List<Word>>
+        get() = wordDAO.allWords
+
+    override fun insertWord(vararg word: Word) {
+
+        wordDAO.insertWord(*word)
+    }
+
+    override fun getCount(): Int {
 
         return wordDAO.getCount()
+
     }
+//
+//
+//    override fun getPLWord(count: Int): String {
+//
+//        return wordDAO.getPlWord(count)
+//    }
+//
+//    override fun makeRand(to: Int): Int {
+//
+//        return wordDAO.makeRand(to)
+//    }
+
+
+
+//    override fun makeRand(to: Int): Int {
+//
+//        return wordDAO.getCount()
+//    }
 
     override fun getPLWord(count: Int): String {
 
         return wordDAO.getPlWord(count)
     }
 
-    override fun getCount(): Int {
 
-        return wordDAO.getCount()
-    }
 //    override fun getCount() {
 //
 //        wordDAO.getCount()
 //    }
 
-    override fun insertWord(vararg word: Word) {
-
-
-
-        wordDAO.insertWord(*word )
-    }
+//    override fun insertWord(vararg word: Word) {
+//
+//
+//
+//        wordDAO.insertWord(*word )
+//    }
 
 
     companion object {

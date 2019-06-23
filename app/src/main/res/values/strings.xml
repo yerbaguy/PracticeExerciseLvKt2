@@ -15,4 +15,6 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_add_word">AddWord</string>
     <string name="title_activity_pull_the_word">PullTheWord</string>
+    <string name="title_activity_show_word">ShowWord</string>
+    <string name="title_activity_show_words">ShowWords</string>
 </resources>

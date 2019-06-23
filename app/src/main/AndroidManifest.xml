@@ -10,6 +10,16 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
+                android:name=".ShowWords"
+                android:label="@string/title_activity_show_words"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".ShowWord"
+                android:label="@string/title_activity_show_word"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
                 android:name=".PullTheWord"
                 android:label="@string/title_activity_pull_the_word"
                 android:theme="@style/AppTheme.NoActionBar">

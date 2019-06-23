@@ -19,7 +19,12 @@ class Word {
 
     @ColumnInfo(name = "engword")
     var engword:String? = null
+ //    engword:String?
 
     @ColumnInfo(name = "plword")
     var plword:String? = null
+  //  plword:String? = null
+
+
+
 }

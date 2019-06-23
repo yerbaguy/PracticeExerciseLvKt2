@@ -208,6 +208,15 @@ class PullTheWord : AppCompatActivity(), NavigationView.OnNavigationItemSelected
 
             }
 
+            R.id.showword -> {
+
+                var intent = Intent(this, ShowWord::class.java)
+
+                startActivity(intent)
+            }
+
+
+
 
             R.id.nav_home -> {
                 // Handle the camera action
