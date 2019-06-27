@@ -3,12 +3,15 @@ package com.ebartmedia.Local
 import android.arch.lifecycle.LiveData
 import com.ebartmedia.Database.IWordDataSource
 import com.ebartmedia.Model.Word
+import com.ebartmedia.Model.Words
 import io.reactivex.Flowable
 import java.lang.reflect.Array.get
 
 
 class WordDataSource(private val wordDAO: WordDAO): IWordDataSource {
     override val allWords: Flowable<List<Word>>
+ //   override val allWords: Flowable<ArrayList<Word>>
+ //   override val allWords: Flowable<List<Words>>
         get() = wordDAO.allWords
 
     override fun insertWord(vararg word: Word) {

@@ -15,7 +15,8 @@ class Word {
     @NonNull
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id:Int? = null
+  //  var id:Int? = null
+    var id:Int = 0
 
     @ColumnInfo(name = "engword")
     var engword:String? = null

@@ -14,13 +14,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import com.ebartmedia.Adapter.RecyclerViewAdapter
+import com.ebartmedia.Model.Word
 import com.ebartmedia.Model.Words
 import kotlinx.android.synthetic.main.content_show_word.*
 
 class ShowWords : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-    val word = ArrayList<Words>()
+  //  val word = ArrayList<Words>()
+    val word = ArrayList<Word>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,13 +40,13 @@ class ShowWords : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
 
 
 
-        word.add(Words("kind", "rodzaj"))
-        word.add(Words("hardly", "ledwo"))
-        word.add(Words("least", "najmniej"))
-        word.add(Words("particular", "szczegolny"))
-        word.add(Words("each", "kazdy"))
-        word.add(Words("case", "przypadek"))
-        word.add(Words("several", "kilka"))
+//        word.add(Words("kind", "rodzaj"))
+//        word.add(Words("hardly", "ledwo"))
+//        word.add(Words("least", "najmniej"))
+//        word.add(Words("particular", "szczegolny"))
+//        word.add(Words("each", "kazdy"))
+//        word.add(Words("case", "przypadek"))
+//        word.add(Words("several", "kilka"))
 
 
 
@@ -53,6 +55,7 @@ class ShowWords : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
 
 
         val wordRepo = RecyclerViewAdapter()
+      //  val wordRepo = RecyclerViewAdapter(this, word)
         wordsList.layoutManager = LinearLayoutManager(this)
        // wordsList.adapter = wordRepo.addWord(word)
 

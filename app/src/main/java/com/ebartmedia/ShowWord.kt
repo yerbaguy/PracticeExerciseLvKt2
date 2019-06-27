@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.*
 import android.util.Log
 import android.view.Menu
+import android.view.MenuInflater
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.ebartmedia.Adapter.RecyclerViewAdapter
@@ -31,7 +32,10 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
 
   //  val word = ArrayList<Word>()
-    val word = ArrayList<Words>()
+    val word = ArrayList<Word>()
+  //  val word = ArrayList<Words>()
+    val displayList = ArrayList<Word>()
+  //  val displayList = ArrayList<Words>()
 
     var eng:String?=""
 
@@ -51,13 +55,16 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         setSupportActionBar(toolbar)
 
         adapter = RecyclerViewAdapter()
+     //   adapter = RecyclerViewAdapter(this, word)
         wordsList.adapter = adapter
 
 
         val linearLayoutmg = LinearLayoutManager(applicationContext)
         wordsList.layoutManager = linearLayoutmg
+      //  wordsList.layoutManager = RecyclerViewAdapter(displayList, this)
 
         val wordRepo = RecyclerViewAdapter()
+      //  val wordRepo = RecyclerViewAdapter(this, word)
 
 //        val words = Word()
 //        words.engword="kind"
@@ -74,22 +81,33 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 //        words.plword="kilkanascie"
 
 
-        word.add(Words("kind", "rodzaj"))
-        word.add(Words("hardly", "ledwo"))
-        word.add(Words("least", "najmniej"))
-        word.add(Words("particular", "szczegolny"))
-        word.add(Words("each", "kazdy"))
-        word.add(Words("case", "przypadek"))
-        word.add(Words("several", "kilka"))
+//        word.add(Words("kind", "rodzaj"))
+//        word.add(Words("hardly", "ledwo"))
+//        word.add(Words("least", "najmniej"))
+//        word.add(Words("particular", "szczegolny"))
+//        word.add(Words("each", "kazdy"))
+//        word.add(Words("case", "przypadek"))
+//        word.add(Words("several", "kilka"))
+
+
+
+//        word.add(Word("kind", "rodzaj"))
+//        word.add(Word("hardly", "ledwo"))
+//        word.add(Word("least", "najmniej"))
+//        word.add(Word("particular", "szczegolny"))
+//        word.add(Word("each", "kazdy"))
+//        word.add(Word("case", "przypadek"))
+//        word.add(Word("several", "kilka"))
 
 
 
 
-       // word.add(words)
+
+        // word.add(words)
 
          //  word.addAll(listOf(Word()))
 
-        wordRepo.addWord(word)
+     //   wordRepo.addWord(word)
 
       //  wordRepo.addWord(word)
 
@@ -129,7 +147,8 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
 
 //        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = RecyclerViewAdapter()
+      //  val adapter = RecyclerViewAdapter()
+//        val adapter = RecyclerViewAdapter(this, word)  //here
 //        recyclerView.adapter = adapter
 //        recyclerView.layoutManager = RecyclerView.LayoutManager(RecyclerVi)
 
@@ -190,38 +209,9 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
       //  menuInflater.inflate(R.menu.show_word, menu)
-        menuInflater.inflate(R.menu.show_word, menu)
-        val searchItem = menu.findItem(R.id.menu_search)
 
-        if (searchItem != null) {
+        menuInflater.inflate(R.menu.main_, menu)
 
-            val searchView = searchItem.actionView as SearchView
-            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-
-                    return true;
-                }
-
-                override fun onQueryTextChange(nextText: String?): Boolean {
-
-
-                    if(nextText!!.isNotEmpty()) {
-
-
-                    } else {
-
-//                        displayList.clear()
-//                        displayList.addAll(words)
-//                        words_list.adapter.notifyDataSetChanged()
-
-                    }
-
-
-                    return true;
-                }
-
-            })
-        }
 
         return true
     }
@@ -299,10 +289,17 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
                    // words -> words.toString()
 
+               //   allWords -> onGetAllWords(allWords)
+
+                words -> onGetAllWords(words)
+              //  Log.d("allwords", "allwords" + allWords)
+
+                 //   words -> onGetAllWords(word)
+                   // adapter.addWord(word)
+
+              //  adapter.addWord(word)
 
 
-                 //   words -> onGetAllWords(words)
-                    adapter.addWord(word)
 
             })
             {
@@ -314,11 +311,22 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
     }
 
-    private fun onGetAllWords(words: List<Word>) {
+  //  private fun onGetAllWords(words: List<Words>) {
+  private fun onGetAllWords(allWords: List<Word>) {
 
-        words.toString()
 
-        eng = words.get(1).engword
+      Log.d("onGetAllWords", "onGetAllWords" + allWords)
+
+        word.clear()
+       // word.addAll(words)
+      //  word.addAll(allWords)
+       adapter.addWord(allWords)
+        adapter.notifyDataSetChanged()
+
+
+      //  words.toString()
+
+      //  eng = words.get(1).engword
 
         Log.d("eng", "eng" + eng)
 

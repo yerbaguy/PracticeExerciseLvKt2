@@ -3,6 +3,7 @@ package com.ebartmedia.Database
 import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.Query
 import com.ebartmedia.Model.Word
+import com.ebartmedia.Model.Words
 import io.reactivex.Flowable
 
 interface IWordDataSource {
@@ -19,6 +20,8 @@ interface IWordDataSource {
  //   fun selectAllWords(): LiveData<List<Word>>
 
     val allWords: Flowable<List<Word>>
+ // val allWords: Flowable<ArrayList<Word>>
+  //  val allWords: Flowable<List<Words>>
 
    // fun makeRand(to:Int): Int
 }

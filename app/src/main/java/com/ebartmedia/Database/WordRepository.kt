@@ -2,11 +2,14 @@ package com.ebartmedia.Database
 
 import android.arch.lifecycle.LiveData
 import com.ebartmedia.Model.Word
+import com.ebartmedia.Model.Words
 import io.reactivex.Flowable
 import java.util.*
 
 class WordRepository(private val mLocationDataSource: IWordDataSource):IWordDataSource {
     override val allWords: Flowable<List<Word>>
+  //  override val allWords: Flowable<ArrayList<Word>>
+  //  override val allWords: Flowable<List<Words>>
         get() = mLocationDataSource.allWords
 
 

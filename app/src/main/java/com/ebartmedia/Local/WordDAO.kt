@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.ebartmedia.Model.Word
+import com.ebartmedia.Model.Words
 import io.reactivex.Flowable
 
 
@@ -14,6 +15,11 @@ interface WordDAO {
    // @get:Query("SELECT * FROM word")
     @get:Query("SELECT id, engword FROM word")
     val allWords: Flowable<List<Word>>
+  //  val allWords: Flowable<ArrayList<Word>>
+
+//    @get:Query("SELECT id, engword FROM word")
+//    val allWords: Flowable<List<Words>>
+
 
     @Insert
     fun insertWord(vararg words: Word)
