@@ -16,10 +16,15 @@ interface IWordDataSource {
   //  @Query("SELECT plword FROM word WHERE id LIKE :count")
     fun getPLWord(count:Int): String
 
-  //  @Query("SELECT * FROM word")
- //   fun selectAllWords(): LiveData<List<Word>>
+//    @Query("SELECT * FROM word")
+//    fun selectAllWords(): LiveData<List<Word>>
 
-    val allWords: Flowable<List<Word>>
+  @Query("SELECT * FROM word")
+  fun selectAllWords(): List<Word>
+
+
+
+  val allWords: Flowable<List<Word>>
  // val allWords: Flowable<ArrayList<Word>>
   //  val allWords: Flowable<List<Words>>
 

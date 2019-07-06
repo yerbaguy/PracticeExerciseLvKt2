@@ -17,8 +17,8 @@ interface WordDAO {
     val allWords: Flowable<List<Word>>
   //  val allWords: Flowable<ArrayList<Word>>
 
-//    @get:Query("SELECT id, engword FROM word")
-//    val allWords: Flowable<List<Words>>
+    @get:Query("SELECT id, engword FROM word")
+    val selectAllWords: List<Word>
 
 
     @Insert

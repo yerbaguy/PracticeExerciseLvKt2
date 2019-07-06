@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.showword -> {
 
-                var intent = Intent(this, ShowWord::class.java)
+                var intent = Intent(this, ShowwWord::class.java)
 
                 startActivity(intent)
             }

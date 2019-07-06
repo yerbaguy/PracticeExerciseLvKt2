@@ -21,6 +21,9 @@ import kotlinx.android.synthetic.main.content_show_word.*
 class ShowWords : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
+    private lateinit var viewModel: MainViewModel
+
+
   //  val word = ArrayList<Words>()
     val word = ArrayList<Word>()
 
@@ -54,7 +57,8 @@ class ShowWords : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLi
 
 
 
-        val wordRepo = RecyclerViewAdapter()
+      //  val wordRepo = RecyclerViewAdapter()
+        val wordRepo = RecyclerViewAdapter(this, viewModel.oldFilteredPosts)
       //  val wordRepo = RecyclerViewAdapter(this, word)
         wordsList.layoutManager = LinearLayoutManager(this)
        // wordsList.adapter = wordRepo.addWord(word)

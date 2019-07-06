@@ -1,7 +1,12 @@
 package com.ebartmedia
 
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
@@ -28,25 +33,59 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.content_show_word.*
 import kotlinx.android.synthetic.main.word_item.view.*
 
+import com.jakewharton.rxbinding2.widget.textChanges
+import java.util.concurrent.TimeUnit
+
+import android.support.v7.util.DiffUtil
+import android.text.Editable
+import android.text.TextWatcher
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Action
+import io.reactivex.internal.operators.observable.ObservableError
+import io.reactivex.rxkotlin.addTo
+
 class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-  //  val word = ArrayList<Word>()
-    val word = ArrayList<Word>()
-  //  val word = ArrayList<Words>()
-    val displayList = ArrayList<Word>()
-  //  val displayList = ArrayList<Words>()
+    private lateinit var viewModel: MainViewModel
 
-    var eng:String?=""
+    //  private val disposable: CompositeDisposable?=null
+    //  private var disposable: CompositeDisposable()
+
+
+    //  val word = ArrayList<Word>()
+    var word = ArrayList<Word>()
+    //  val word = ArrayList<Words>()
+    var displayList = ArrayList<Word>()
+
+    //  val displayList = ArrayList<Words>()
+
+    var eng: String? = ""
 
     private lateinit var adapter: RecyclerViewAdapter
 
- //   lateinit var adapter: ArrayAdapter<*>
- //   var wordList:MutableList<Word> = ArrayList()
+    //   lateinit var adapter: ArrayAdapter<*>
+    //   var wordList:MutableList<Word> = ArrayList()
 
 
-    private var compositeDisposable: CompositeDisposable?=null
-    private var wordRepository: WordRepository?=null
+    private var compositeDisposable: CompositeDisposable? = null
+    private var wordRepository: WordRepository? = null
+
+
+    override fun onStart() {
+        super.onStart()
+        // disposable.add(/* Some disposable */)
+    }
+
+
+    operator fun AndroidDisposable.plusAssign(disposable: Disposable) {
+        add(disposable)
+    }
+
+    fun Disposable.addTo(androidDisposable: AndroidDisposable): Disposable = apply { androidDisposable.add(this) }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,17 +93,27 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        adapter = RecyclerViewAdapter()
-     //   adapter = RecyclerViewAdapter(this, word)
+
+
+        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+
+        wordsList.layoutManager = LinearLayoutManager(this)
+        //  adapter = RecyclerViewAdapter()
+        //   adapter = RecyclerViewAdapter(this, viewModel.oldFilteredPosts)
+        adapter = RecyclerViewAdapter(this, word)
+
+        //   adapter = RecyclerViewAdapter(this, word)
         wordsList.adapter = adapter
 
 
         val linearLayoutmg = LinearLayoutManager(applicationContext)
         wordsList.layoutManager = linearLayoutmg
-      //  wordsList.layoutManager = RecyclerViewAdapter(displayList, this)
+        //  wordsList.layoutManager = RecyclerViewAdapter(displayList, this)
 
-        val wordRepo = RecyclerViewAdapter()
-      //  val wordRepo = RecyclerViewAdapter(this, word)
+        //  val wordRepo = RecyclerViewAdapter()
+        val wordRepo = RecyclerViewAdapter(this, viewModel.oldFilteredPosts)
+        //  val wordRepo = RecyclerViewAdapter(this, word)
 
 //        val words = Word()
 //        words.engword="kind"
@@ -90,7 +139,6 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 //        word.add(Words("several", "kilka"))
 
 
-
 //        word.add(Word("kind", "rodzaj"))
 //        word.add(Word("hardly", "ledwo"))
 //        word.add(Word("least", "najmniej"))
@@ -100,19 +148,13 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 //        word.add(Word("several", "kilka"))
 
 
-
-
-
         // word.add(words)
 
-         //  word.addAll(listOf(Word()))
+        //  word.addAll(listOf(Word()))
 
-     //   wordRepo.addWord(word)
+        //   wordRepo.addWord(word)
 
-      //  wordRepo.addWord(word)
-
-
-
+        //  wordRepo.addWord(word)
 
 
         compositeDisposable = CompositeDisposable()
@@ -123,35 +165,155 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 //        lst_users!!.adapter = adapter
 
 
-
         val wordDatabase = WordDatabase.getInstance(this)
         wordRepository = WordRepository.getInstance(WordDataSource.getInstance(wordDatabase.wordDAO()))
 
 
+//        search_text
+//            .textChanges()
+//            .debounce(200, TimeUnit.MILLISECONDS)
+//            .subscribe{
+//                viewModel
+//                   .search(it.toString())
+//                    .subscribeOn(Schedulers.computation())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe{
+//
+//                        val diffResult = DiffUtil.calculateDiff(PostsDiffUtilCallback(viewModel.oldFilteredPosts, viewModel.filteredPosts))
+//                        viewModel.oldFilteredPosts.clear()
+//                        viewModel.oldFilteredPosts.addAll(viewModel.filteredPosts)
+//                        diffResult.dispatchUpdatesTo(wordsList.adapter as RecyclerViewAdapter)
+//
+//                    }.addTo(disposable)
+//
+//
+//
+//
+//            }.addTo(disposable)
+
 
         loadData()
+
+
+        search_text.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                Log.d("searchtext", "searchtext" + search_text.text.toString())
+
+//                displayList = wordRepository!!.selectAllWords() as ArrayList<Word>
+//
+//                if (!search_text.text.isEmpty()) {
+//
+//                    for (i in 0..displayList.size - 1) {
+//
+//                        if (displayList.get(i).engword!!.toLowerCase().contentEquals(s.toString().toLowerCase()))
+//                            displayList.add(word[i])
+//                    }
+//
+//                    adapter = RecyclerViewAdapter(this@ShowWord, displayList)
+//                    wordsList.adapter = adapter
+//                } else {
+//
+//                    adapter = RecyclerViewAdapter(this@ShowWord, displayList)
+//                    wordsList.adapter = adapter
+//
+//
+//                }
+
+
+                val disposable = Observable.create(ObservableOnSubscribe<Any> { e ->
+
+                    var filteredList = ArrayList<Word>()
+                    displayList = wordRepository!!.selectAllWords() as ArrayList<Word>
+
+                    word = wordRepository!!.selectAllWords() as ArrayList<Word>
+
+                    if (!search_text.text.isEmpty()) {
+
+                        for (i in 0..displayList.size - 1) {
+
+//                            if (displayList.get(i).engword!!.toLowerCase().contentEquals(s.toString().toLowerCase()))
+//                                displayList.add(word[i])
+
+                            if (word.get(i).engword!!.toLowerCase().contentEquals(s.toString().toLowerCase()))
+                                filteredList.add(word[i])
+
+                            //  Log.d("displaylist", "displaylist" + displayList.get(i))
+                            Log.d(
+                                "displaylist",
+                                "displaylist" + displayList.get(i).engword!!.toLowerCase().contentEquals(s.toString().toLowerCase())
+                            )
+                        }
+
+                        adapter = RecyclerViewAdapter(this@ShowWord, filteredList)
+
+                        //  adapter.registerAdapterDataObserver(RecyclerView.AdapterDataObserver)
+
+                        wordsList.adapter = adapter
+                    } else {
+
+                        adapter = RecyclerViewAdapter(this@ShowWord, displayList)
+                        wordsList.adapter = adapter
+
+
+                    }
+
+                    e.onComplete()
+
+                })
+
+
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(io.reactivex.functions.Consumer {
+
+                    },
+
+                        io.reactivex.functions.Consumer {
+
+                                throwable ->
+                            //  Toast.makeText(this, "" + throwable.message, Toast.LENGTH_SHORT).show()
+
+                            Toast.makeText(this@ShowWord, "" + throwable.message, Toast.LENGTH_SHORT).show()
+                        },
+
+                        Action { })
+
+                compositeDisposable!!.addAll(disposable)
+
+
+            }
+        })
 
 //        val words_list = findViewById<RecyclerView>(R.id.recycler_view) as RecyclerView
 //
 //        words_list.layoutManager = LinearLayoutManager(this)
 
-      //  words_list.layoutManager = GridLayoutManager(this)
+        //  words_list.layoutManager = GridLayoutManager(this)
 
 //        val linearLayoutmg = LinearLayoutManager(applicationContext)
 //        recycler_view.layoutManager = linearLayoutmg
 
 
-      //  val recyclerViewAdapter = RecyclerViewAdapter()
+        //  val recyclerViewAdapter = RecyclerViewAdapter()
 
-            // recyclerViewAdapter.addWord(new Word("lkjasdf", "lkjasdflkj"))
+        // recyclerViewAdapter.addWord(new Word("lkjasdf", "lkjasdflkj"))
 
 
 //        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-      //  val adapter = RecyclerViewAdapter()
+        //  val adapter = RecyclerViewAdapter()
 //        val adapter = RecyclerViewAdapter(this, word)  //here
 //        recyclerView.adapter = adapter
 //        recyclerView.layoutManager = RecyclerView.LayoutManager(RecyclerVi)
-
 
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -169,7 +331,6 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
         navView.setNavigationItemSelectedListener(this)
     }
-
 
 
 //    private fun loadData() {
@@ -208,9 +369,13 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-      //  menuInflater.inflate(R.menu.show_word, menu)
+        //  menuInflater.inflate(R.menu.show_word, menu)
 
         menuInflater.inflate(R.menu.main_, menu)
+
+        val searchItem = menu?.findItem(R.id.menu_search)
+
+        // searchItem?.setOnMenuItemClickListener()
 
 
         return true
@@ -254,6 +419,14 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
             }
 
 
+//            R.id.menu_search -> {
+//
+//
+//
+//
+//            }
+
+
             R.id.nav_home -> {
                 // Handle the camera action
             }
@@ -279,56 +452,136 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
     }
 
 
-
-        private fun loadData() {
+    private fun loadData() {
 
         val disposable = wordRepository!!.allWords
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe({
+            .subscribe(
+                {
 
-                   // words -> words.toString()
+                    // words -> words.toString()
 
-               //   allWords -> onGetAllWords(allWords)
+                    //   allWords -> onGetAllWords(allWords)
 
-                words -> onGetAllWords(words)
-              //  Log.d("allwords", "allwords" + allWords)
 
-                 //   words -> onGetAllWords(word)
-                   // adapter.addWord(word)
 
-              //  adapter.addWord(word)
 
+
+                    words ->
+                onGetAllWords(words)
+                //  Log.d("allwords", "allwords" + allWords)
+
+                //   words -> onGetAllWords(word)
+                // adapter.addWord(word)
+
+               // adapter.addWord(word)
 
 
             })
             {
 
-                throwable->Toast.makeText(this, "" + throwable.message, Toast.LENGTH_SHORT).show()
+                    throwable ->
+                Toast.makeText(this, "" + throwable.message, Toast.LENGTH_SHORT).show()
             }
 
-            compositeDisposable!!.addAll(disposable)
+        compositeDisposable!!.addAll(disposable)
 
     }
 
-  //  private fun onGetAllWords(words: List<Words>) {
-  private fun onGetAllWords(allWords: List<Word>) {
+    //  private fun onGetAllWords(words: List<Words>) {
+    private fun onGetAllWords(allWords: List<Word>) {
 
 
-      Log.d("onGetAllWords", "onGetAllWords" + allWords)
 
-        word.clear()
+        runOnUiThread{
+
+            word.clear()
+// word.addAll(words)
+//  word.addAll(allWords)
+         //   adapter.addWord(allWords)
+          //  adapter.notifyDataSetChanged()
+        }
+
+
+//        Thread( Runnable {
+//
+//            this@ShowWord.runOnUiThread(java.lang.Runnable {
+//
+//
+//          //      Log.d("onGetAllWords", "onGetAllWords" + allWords)
+//
+//                word.clear()
+//// word.addAll(words)
+////  word.addAll(allWords)
+//                adapter.addWord(allWords)
+//              //  adapter.notifyDataSetChanged()
+//
+//
+////  words.toString()
+//
+////  eng = words.get(1).engword
+//
+//         //       Log.d("eng", "eng" + eng)
+//
+//
+//
+//
+//
+//            })
+//
+//        }
+//
+//        ).start()
+
+
+
+
+//        val handler = Handler(Looper.getMainLooper())
+//        handler.post({
+//
+//            Log.d("onGetAllWords", "onGetAllWords" + allWords)
+//
+//            word.clear()
+//// word.addAll(words)
+////  word.addAll(allWords)
+//            adapter.addWord(allWords)
+//            adapter.notifyDataSetChanged()
+//
+//
+////  words.toString()
+//
+////  eng = words.get(1).engword
+//
+//            Log.d("eng", "eng" + eng)
+//
+//
+//        })
+
+
+
+
+
+
+
+
+
+    //)
+
+//      Log.d("onGetAllWords", "onGetAllWords" + allWords) //here
+
+//        word.clear() //here
        // word.addAll(words)
       //  word.addAll(allWords)
-       adapter.addWord(allWords)
-        adapter.notifyDataSetChanged()
+//       adapter.addWord(allWords) //here
+//        adapter.notifyDataSetChanged() //here
 
 
       //  words.toString()
 
       //  eng = words.get(1).engword
 
-        Log.d("eng", "eng" + eng)
+//        Log.d("eng", "eng" + eng) //here
 
 
 //         wordList.clear()
@@ -337,5 +590,10 @@ class ShowWord : AppCompatActivity(), NavigationView.OnNavigationItemSelectedLis
 //        Log.d("words", "words" + words)
 //         adapter.notifyDataSetChanged()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+      //  disposable!!.clear()
     }
 }

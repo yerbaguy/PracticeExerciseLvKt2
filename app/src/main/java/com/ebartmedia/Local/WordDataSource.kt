@@ -9,6 +9,12 @@ import java.lang.reflect.Array.get
 
 
 class WordDataSource(private val wordDAO: WordDAO): IWordDataSource {
+    override fun selectAllWords(): List<Word> {
+
+        return wordDAO.selectAllWords
+    }
+
+
     override val allWords: Flowable<List<Word>>
  //   override val allWords: Flowable<ArrayList<Word>>
  //   override val allWords: Flowable<List<Words>>

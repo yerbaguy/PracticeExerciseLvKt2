@@ -7,6 +7,11 @@ import io.reactivex.Flowable
 import java.util.*
 
 class WordRepository(private val mLocationDataSource: IWordDataSource):IWordDataSource {
+    override fun selectAllWords(): List<Word> {
+
+        return mLocationDataSource.selectAllWords()
+    }
+
     override val allWords: Flowable<List<Word>>
   //  override val allWords: Flowable<ArrayList<Word>>
   //  override val allWords: Flowable<List<Words>>
