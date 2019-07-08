@@ -10,6 +10,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
+                android:name=".Details"
+                android:label="@string/title_activity_details"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
                 android:name=".ShowwWord"
                 android:label="@string/title_activity_showw_word"
                 android:theme="@style/AppTheme.NoActionBar">
@@ -44,16 +49,18 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable"/>
+            <meta-data
+                    android:name="android.app.searchable"
+                    android:resource="@xml/searchable"/>
 
             <intent-filter>
-
-                <action android:name="android.intent.action.SEARCH"></action>
-
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
-
-
+        </activity>
+        <activity
+                android:name=".WordDetails"
+                android:label="@string/title_activity_add_word"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

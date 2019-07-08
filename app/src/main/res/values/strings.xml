@@ -19,4 +19,5 @@
     <string name="title_activity_show_word">ShowWord</string>
     <string name="title_activity_show_words">ShowWords</string>
     <string name="title_activity_showw_word">ShowwWord</string>
+    <string name="title_activity_details">Details</string>
 </resources>

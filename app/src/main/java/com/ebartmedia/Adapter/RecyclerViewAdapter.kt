@@ -1,22 +1,17 @@
 package com.ebartmedia.Adapter
 
 import android.content.Context
+import android.content.Intent
+import android.support.design.widget.NavigationView
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewParent
-import android.widget.AdapterView
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.TextView
+import android.widget.*
+import com.ebartmedia.*
 import com.ebartmedia.Model.Word
-import com.ebartmedia.Model.Words
 //import com.ebartmedia.Model.Words
-import com.ebartmedia.R
-import kotlinx.android.synthetic.main.word_item.view.*
-import org.w3c.dom.Text
 
 //class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.WordItemViewHolder>() {
 //class RecyclerViewAdapter(internal val context: Context, private var words: List<Word>) : RecyclerView.Adapter<RecyclerViewAdapter.WordItemViewHolder>() {
@@ -25,6 +20,7 @@ class RecyclerViewAdapter(internal var context: Context, internal var word: List
 
    //   internal var filterListWord: List<Word>
     internal var filterListWord: List<Word>
+    var mContext = context
 
     init {
 
@@ -48,6 +44,53 @@ class RecyclerViewAdapter(internal var context: Context, internal var word: List
 
         holder.engw.text = filterListWord[position].engword
         holder.plw.text = filterListWord[position].plword
+
+
+        val en = holder.engw
+        val p = holder.plw
+
+
+
+        holder.setOnCustomItemClickListener(object :CustomItemClickListener {
+            override fun onCustomItemClickListener(view: View, pos: Int) {
+
+//                val intent = Intent(mContext, AddWord::class.java)
+
+              //  startActivity(mContext, intent, pos)
+
+              //  Toast.makeText(mContext, "lkajsdflkj", Toast.LENGTH_LONG).show()
+
+              // view.context.startActivity<MainActivity>()
+             //  startActivity(this@RecyclerViewAdapter, AddWord::class.java)
+
+
+                var en = holder.engw.text.toString()
+              //  var p = holder.engw.text.toString()
+
+ //               val intent = Intent(view.context, WordDetails::class.java)
+                val intent = Intent(view.context, Details::class.java)
+
+                intent.putExtra("eng", en)
+               // intent.putExtra("p", p)
+
+                view.context.startActivity(intent)
+
+            }
+
+
+        })
+
+
+//        holder.setOnCustomItemClickListener(object: CustomItemClickListener {
+//            override fun onCustomItemClickListener(view: View, pos: Int) {
+//
+//               // Toast.makeText(mContext, "engw" + holder.engw.text + "plw" + holder.plw.text, Toast.LENGTH_LONG).show()
+//
+//
+//
+//            }
+//
+//        })
 
     }
 
@@ -98,16 +141,41 @@ class RecyclerViewAdapter(internal var context: Context, internal var word: List
     }
 
 
-    class WordItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class WordItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        override fun onClick(v: View?) {
+
+            this.customItemClickListener!!.onCustomItemClickListener(v!!, adapterPosition)
+
+
+        }
 
         internal var engw:TextView
         internal var plw:TextView
 
+        var customItemClickListener:CustomItemClickListener?=null
+
         init {
             engw = itemView.findViewById(R.id.engword)
             plw = itemView.findViewById(R.id.plword)
+
+            itemView.setOnClickListener(this)
+
+
+
+
+
+
         }
 
+        fun setOnCustomItemClickListener(itemClickListener:CustomItemClickListener) {
+
+            this.customItemClickListener = itemClickListener
+        }
+
+//        override fun onClick(v: View?) {
+//
+//            this.customItemClickListener!!.onCustomItemClickListener(v!!, adapterPosition)
+//        }
 
     }
 }
