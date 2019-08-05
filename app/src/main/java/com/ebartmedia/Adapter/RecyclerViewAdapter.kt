@@ -5,6 +5,7 @@ import android.content.Intent
 import android.support.design.widget.NavigationView
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ class RecyclerViewAdapter(internal var context: Context, internal var word: List
         holder.engw.text = filterListWord[position].engword
         holder.plw.text = filterListWord[position].plword
 
+        Log.d("onBindViewHolder", "onBindViewHolder" + holder)
 
         val en = holder.engw
         val p = holder.plw
